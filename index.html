@@ -6,17 +6,15 @@
     <title>Меню Ресторана</title>
     
     <style>
-        /* --- ПОДКЛЮЧЕНИЕ ШРИФТА MASVOL --- */
+        /* --- ШРИФТ (Тот же, что был) --- */
         @font-face {
             font-family: 'Masvol';
-            /* Файл шрифта должен лежать рядом с index.html */
-            src: url('Masvol.otf') format('opentype'),
-                 url('Masvol.ttf') format('truetype');
+            src: url('cd-masvol-thin.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
         }
 
-        /* --- 1. ГЛОБАЛЬНЫЕ СТИЛИ (ФОН СТОЛА) --- */
+        /* --- СТИЛИ --- */
         :root {
             --primary-color: #8B4513; 
             --app-bg: #1a1a1a;
@@ -25,40 +23,30 @@
 
         body { 
             margin: 0; 
-            background-color: #0f0f0f; /* Темный фон "вокруг" телефона */
+            background-color: #0f0f0f;
             height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             font-family: var(--text-font);
         }
         
         button { font-family: var(--text-font); cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; }
 
-        /* --- 2. РАМКА ТЕЛЕФОНА (iPhone 17 Pro Max Style) --- */
         #app-frame {
-            width: 100%;
-            max-width: 440px; /* Ширина большого iPhone */
-            height: 100%;
-            max-height: 100vh;
-            background-color: var(--app-bg);
-            position: relative;
-            overflow: hidden; /* Всё, что вылезает за рамки — обрезаем */
-            box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Тень, чтобы выделить "телефон" */
-            color: white;
+            width: 100%; max-width: 440px; height: 100%; max-height: 100vh;
+            background-color: var(--app-bg); position: relative; overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5); color: white;
         }
 
-        /* Если открываем с реального телефона — убираем рамки */
         @media (max-width: 450px) {
             #app-frame { max-width: 100%; height: 100vh; box-shadow: none; }
             body { background-color: var(--app-bg); }
         }
 
-        /* === ЭКРАН 1: ЛЭНДИНГ (Обложка) === */
+        /* === ЭКРАН 1: ЛЭНДИНГ === */
         #landing-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* Путь к первой картинке в папке img */
-            background: url('img/1.jpg') no-repeat center center/cover; 
+            /* ! ЗАМЕНИЛ НА WEBP ! */
+            background: url('img/1.webp') no-repeat center center/cover; 
             z-index: 20;
             display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
             padding-bottom: 40px;
@@ -94,7 +82,7 @@
         }
         .btn-open:active { transform: scale(0.96); }
 
-        /* === ЭКРАН 2: ПРОСМОТР МЕНЮ === */
+        /* === ЭКРАН 2: ПРОСМОТР === */
         #viewer-page {
             display: none; 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -135,7 +123,7 @@
         }
         .nav-center { font-size: 1rem; color: white; letter-spacing: 1px; white-space: nowrap; }
 
-        /* === БОКОВОЕ МЕНЮ (БУРГЕР) === */
+        /* === БОКОВОЕ МЕНЮ === */
         #sidebar {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95);
@@ -157,13 +145,11 @@
         .close-menu-area {
             position: absolute; top: 20px; right: 25px; font-size: 2.5rem; cursor: pointer; color: #aaa;
         }
-
     </style>
 </head>
 <body>
 
     <div id="app-frame">
-
         <div id="landing-page">
             <div class="landing-categories" id="landing-cats"></div>
             <button class="btn-open" onclick="startApp()">ОТКРЫТЬ</button>
@@ -178,7 +164,7 @@
             </div>
             <div class="bottom-bar">
                 <button class="nav-link" onclick="changeSlide(-1)">← Назад</button>
-                <div class="nav-center" id="page-indicator">Загрузка...</div>
+                <div class="nav-center" id="page-indicator">...</div>
                 <button class="nav-link" onclick="changeSlide(1)">Вперед →</button>
             </div>
         </div>
@@ -187,25 +173,21 @@
             <div class="close-menu-area" onclick="toggleMenu()">×</div>
             <div id="sidebar-list"></div>
         </div>
-
     </div>
 
     <script>
-        /* === ВАЖНО: НАСТРОЙКИ === */
-        // src: путь к файлу (img/название.jpg)
-        // category: название раздела
-        
+        /* === ТЕПЕРЬ ВСЕ ФАЙЛЫ .WEBP === */
         const menuData = [
-            { src: 'img/1.jpg', category: 'Завтраки' }, // Заставка и первая стр.
-            { src: 'img/2.jpg', category: 'Завтраки' }, 
-            { src: 'img/3.jpg', category: 'Пицца' },
-            { src: 'img/4.jpg', category: 'Закуски' },
-            { src: 'img/5.jpg', category: 'Салаты' },
-            { src: 'img/6.jpg', category: 'Паста' },
-            { src: 'img/7.jpg', category: 'Первые блюда' },
-            { src: 'img/8.jpg', category: 'Вторые блюда' },
-            { src: 'img/9.jpg', category: 'Детское меню' },
-            { src: 'img/10.jpg', category: 'Десерты' }
+            { src: 'img/1.webp', category: 'Завтраки' }, 
+            { src: 'img/2.webp', category: 'Завтраки' }, 
+            { src: 'img/3.webp', category: 'Пицца' },
+            { src: 'img/4.webp', category: 'Закуски' },
+            { src: 'img/5.webp', category: 'Салаты' },
+            { src: 'img/6.webp', category: 'Паста' },
+            { src: 'img/7.webp', category: 'Первые блюда' },
+            { src: 'img/8.webp', category: 'Вторые блюда' },
+            { src: 'img/9.webp', category: 'Детское меню' },
+            { src: 'img/10.webp', category: 'Десерты' }
         ];
 
         /* === ЛОГИКА === */
@@ -219,7 +201,6 @@
         const categories = [...new Set(menuData.map(item => item.category))];
 
         function init() {
-            // Кнопки на главной
             const landingCatsContainer = document.getElementById('landing-cats');
             categories.forEach(cat => {
                 const btn = document.createElement('div');
@@ -229,7 +210,6 @@
                 landingCatsContainer.appendChild(btn);
             });
 
-            // Список в меню
             const sidebarList = document.getElementById('sidebar-list');
             categories.forEach(cat => {
                 const item = document.createElement('div');
@@ -251,10 +231,9 @@
             imgElement.src = item.src;
             const pageNum = (currentIndex + 1).toString().padStart(2, '0');
             indicator.innerText = `${pageNum} / ${item.category}`;
-            
-            // Заглушка, если файла нет
             imgElement.onerror = function() {
-                 this.src = `https://via.placeholder.com/440x800/222/FFF?text=${item.category}`;
+                 // Заглушка, если забыл переименовать файлы
+                 this.src = `https://via.placeholder.com/440x800/222/FFF?text=Файл+не+.webp`;
             };
         }
 
