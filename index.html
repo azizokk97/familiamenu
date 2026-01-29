@@ -14,15 +14,16 @@
             font-style: normal;
         }
 
-        /* --- БАЗА --- */
+        /* --- НАСТРОЙКИ ЦВЕТОВ --- */
         :root {
             --primary-color: #8B4513; 
-            --app-bg: #1a1a1a;
+            --app-bg: #111111; /* Глубокий темный фон */
+            --bars-bg: #1a1a1a; /* Цвет полей (чтобы не были просто черными) */
             --text-font: 'Masvol', 'Playfair Display', serif; 
         }
 
         body { 
-            margin: 0; background-color: #0f0f0f;
+            margin: 0; background-color: #000;
             height: 100vh; height: 100dvh; 
             overflow: hidden;
             display: flex; justify-content: center; align-items: center;
@@ -32,6 +33,7 @@
         
         button { font-family: var(--text-font); cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; }
 
+        /* РАМКА ТЕЛЕФОНА */
         #app-frame {
             width: 100%; max-width: 440px; height: 100%; position: relative; 
             background-color: var(--app-bg); 
@@ -44,24 +46,17 @@
             #app-frame { max-width: 100%; box-shadow: none; }
         }
 
-        /* === 1. ЛЭНДИНГ И АНИМАЦИЯ ОТКРЫТИЯ === */
+        /* === 1. ЗАСТАВКА (ЛЭНДИНГ) === */
         #landing-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: url('1.webp') no-repeat center center/cover; 
             z-index: 50; 
             display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
             padding-bottom: 40px;
-            
-            /* Анимация исчезновения */
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         
-        /* Класс для скрытия лэндинга */
-        .landing-hidden {
-            opacity: 0;
-            transform: scale(1.1); /* Легкое увеличение при исчезновении */
-            pointer-events: none;
-        }
+        .landing-hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
         
         #landing-page::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -73,7 +68,7 @@
             max-width: 90%; margin-bottom: 30px;
         }
         .cat-pill {
-            background: rgba(60, 30, 20, 0.8); 
+            background: rgba(60, 30, 20, 0.85); 
             border: 1px solid rgba(255,255,255,0.3);
             color: #ddd; padding: 12px 18px; border-radius: 30px;
             text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
@@ -82,7 +77,7 @@
         .cat-pill:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; transform: scale(1.05); }
 
         .btn-open {
-            background: rgba(60, 30, 20, 0.9);
+            background: rgba(60, 30, 20, 0.95);
             border: 1px solid rgba(139, 69, 19, 0.6);
             color: white; font-size: 1.6rem; 
             padding: 15px 50px; border-radius: 12px; letter-spacing: 3px; 
@@ -90,26 +85,22 @@
             margin-bottom: 50px;
             transition: transform 0.1s;
         }
-        .btn-open:active { transform: scale(0.95); }
+        .btn-open:active { transform: scale(0.96); }
 
-        /* === 2. ПРОСМОТР === */
+        /* === 2. ПРОСМОТР МЕНЮ === */
         #viewer-page {
-            /* Сначала скрыт прозрачностью, а не display:none, чтобы работала анимация */
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column;
-            background-color: #000;
-            opacity: 0; transition: opacity 0.8s ease; /* Плавное появление */
-            z-index: 10;
-            pointer-events: none; /* Чтобы не кликать пока не виден */
+            background-color: var(--bars-bg); /* Цвет полей */
+            opacity: 0; transition: opacity 0.6s ease; 
+            z-index: 10; pointer-events: none;
         }
         
-        .viewer-visible {
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
+        .viewer-visible { opacity: 1 !important; pointer-events: auto !important; }
 
+        /* Невидимые кнопки для свайпа */
         .tap-layer {
-            position: absolute; top: 60px; bottom: 70px; left: 0; width: 100%;
+            position: absolute; top: 60px; bottom: 80px; left: 0; width: 100%;
             z-index: 15; display: flex;
         }
         .tap-left { width: 50%; height: 100%; }
@@ -118,60 +109,52 @@
         .top-bar-area {
             height: 60px; flex-shrink: 0; display: flex; align-items: center; padding-left: 20px;
             z-index: 20; position: absolute; top: 0; left: 0; width: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent); /* Затемнение сверху */
         }
         .btn-menu {
-            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);
-            color: #ddd; padding: 8px 16px; text-transform: uppercase;
-            font-size: 0.8rem; letter-spacing: 1px; border-radius: 4px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.3);
+            color: #eee; padding: 8px 16px; text-transform: uppercase;
+            font-size: 0.75rem; letter-spacing: 1px; border-radius: 6px;
             backdrop-filter: blur(4px);
         }
 
+        /* КОНТЕЙНЕР ФОТО */
         .image-wrapper {
             flex-grow: 1; width: 100%; position: relative;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            perspective: 1000px; /* Для 3D эффектов если захотим */
         }
         
         #current-image {
-            max-width: 100%; max-height: 100%; object-fit: contain;
+            width: 100%; 
+            height: 100%;
+            /* CONTAIN - Гарантия, что ничего не обрежется */
+            object-fit: contain; 
             display: block;
-            /* Базовое состояние для анимаций */
-            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* --- КЛАССЫ АНИМАЦИИ СВАЙПА --- */
-        
-        /* Уход влево (при клике Вперед) */
-        .slide-out-left { transform: translateX(-40px) !important; opacity: 0 !important; }
-        /* Появление справа (при клике Вперед) */
-        .slide-in-right { animation: enterFromRight 0.4s forwards; }
-        
-        /* Уход вправо (при клике Назад) */
-        .slide-out-right { transform: translateX(40px) !important; opacity: 0 !important; }
-        /* Появление слева (при клике Назад) */
-        .slide-in-left { animation: enterFromLeft 0.4s forwards; }
+        /* АНИМАЦИИ */
+        .slide-out-left { transform: translateX(-30px) !important; opacity: 0 !important; }
+        .slide-in-right { animation: enterRight 0.3s forwards; }
+        .slide-out-right { transform: translateX(30px) !important; opacity: 0 !important; }
+        .slide-in-left { animation: enterLeft 0.3s forwards; }
 
-        @keyframes enterFromRight {
-            0% { transform: translateX(40px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes enterFromLeft {
-            0% { transform: translateX(-40px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
+        @keyframes enterRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes enterLeft { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* Лоадер */
+        /* Крутилка загрузки */
         .loader {
             position: absolute; width: 40px; height: 40px;
-            border: 4px solid #333; border-top: 4px solid var(--primary-color);
-            border-radius: 50%; animation: spin 1s linear infinite;
+            border: 3px solid #333; border-top: 3px solid var(--primary-color);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
             z-index: -1;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* Нижняя панель */
         .bottom-bar {
             height: 80px; flex-shrink: 0; background-color: #5D2E1F; 
             display: flex; justify-content: space-between; align-items: center;
@@ -180,50 +163,49 @@
             border-top: 1px solid rgba(255,255,255,0.1); z-index: 20;
             padding-bottom: env(safe-area-inset-bottom);
         }
-        .nav-link { background: none; border: none; color: inherit; padding: 20px; font-size: 1.5rem; transition: opacity 0.2s; }
-        .nav-link:active { opacity: 0.5; }
+        .nav-link { background: none; border: none; color: inherit; padding: 20px 25px; font-size: 1.5rem; }
+        .nav-link:active { opacity: 0.6; }
         
         .nav-center { 
             font-size: 1rem; color: white; letter-spacing: 1px; white-space: nowrap; 
-            cursor: pointer; padding: 15px;
-            transition: transform 0.2s;
+            cursor: pointer; padding: 15px; transition: transform 0.1s;
         }
-        /* Анимация текста при смене */
+        .nav-center:active { transform: scale(0.95); }
+        
         .text-pop { animation: popText 0.3s ease; }
         @keyframes popText { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.9); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
 
         /* === БОКОВОЕ МЕНЮ === */
         #sidebar {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.96); z-index: 100;
+            background: rgba(15, 15, 15, 0.98); z-index: 100;
             transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex; flex-direction: column; padding-top: 60px;
         }
         #sidebar.open { transform: translateX(0); }
 
         .sidebar-item {
-            padding: 22px 30px; border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: white; font-size: 1.2rem; text-transform: uppercase;
+            padding: 22px 30px; border-bottom: 1px solid rgba(255,255,255,0.08);
+            color: #eee; font-size: 1.2rem; text-transform: uppercase;
             letter-spacing: 1px; cursor: pointer;
-            opacity: 0; transform: translateX(-20px); transition: 0.3s; /* Для анимации появления */
+            opacity: 0; transform: translateX(-20px); transition: 0.3s;
         }
-        /* Каскадное появление пунктов меню */
         #sidebar.open .sidebar-item { opacity: 1; transform: translateX(0); }
-        /* Задержки для каждого пункта */
-        #sidebar.open .sidebar-item:nth-child(1) { transition-delay: 0.1s; }
-        #sidebar.open .sidebar-item:nth-child(2) { transition-delay: 0.15s; }
-        #sidebar.open .sidebar-item:nth-child(3) { transition-delay: 0.2s; }
-        #sidebar.open .sidebar-item:nth-child(4) { transition-delay: 0.25s; }
-        #sidebar.open .sidebar-item:nth-child(5) { transition-delay: 0.3s; }
-        #sidebar.open .sidebar-item:nth-child(6) { transition-delay: 0.35s; }
-        #sidebar.open .sidebar-item:nth-child(7) { transition-delay: 0.4s; }
-        #sidebar.open .sidebar-item:nth-child(8) { transition-delay: 0.45s; }
-        #sidebar.open .sidebar-item:nth-child(9) { transition-delay: 0.5s; }
-        #sidebar.open .sidebar-item:nth-child(10) { transition-delay: 0.55s; }
+        /* Задержки появления пунктов */
+        #sidebar.open .sidebar-item:nth-child(1) { transition-delay: 0.05s; }
+        #sidebar.open .sidebar-item:nth-child(2) { transition-delay: 0.1s; }
+        #sidebar.open .sidebar-item:nth-child(3) { transition-delay: 0.15s; }
+        #sidebar.open .sidebar-item:nth-child(4) { transition-delay: 0.2s; }
+        #sidebar.open .sidebar-item:nth-child(5) { transition-delay: 0.25s; }
+        #sidebar.open .sidebar-item:nth-child(6) { transition-delay: 0.3s; }
+        #sidebar.open .sidebar-item:nth-child(7) { transition-delay: 0.35s; }
+        #sidebar.open .sidebar-item:nth-child(8) { transition-delay: 0.4s; }
+        #sidebar.open .sidebar-item:nth-child(9) { transition-delay: 0.45s; }
+        #sidebar.open .sidebar-item:nth-child(10) { transition-delay: 0.5s; }
 
-        .sidebar-item:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
-        .sidebar-item:hover { background: rgba(139, 69, 19, 0.4); padding-left: 40px; }
-        .close-menu-area { position: absolute; top: 20px; right: 25px; font-size: 2.5rem; cursor: pointer; color: #aaa; }
+        .sidebar-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-item:hover { background: rgba(139, 69, 19, 0.3); padding-left: 40px; }
+        .close-menu-area { position: absolute; top: 20px; right: 25px; font-size: 2.5rem; cursor: pointer; color: #888; }
 
     </style>
 </head>
@@ -299,9 +281,11 @@
         const imgElement = document.getElementById('current-image');
         const indicator = document.getElementById('page-indicator');
 
+        // Инициализация
         const categories = [...new Set(menuData.map(item => item.category))];
 
         function init() {
+            // Кнопки главной
             const landingCatsContainer = document.getElementById('landing-cats');
             categories.forEach(cat => {
                 const btn = document.createElement('div');
@@ -311,6 +295,7 @@
                 landingCatsContainer.appendChild(btn);
             });
 
+            // Боковое меню
             const sidebarList = document.getElementById('sidebar-list');
             categories.forEach(cat => {
                 const item = document.createElement('div');
@@ -320,17 +305,12 @@
                 sidebarList.appendChild(item);
             });
             
-            // Загружаем первую картинку тихо
-            const item = menuData[currentIndex];
-            imgElement.src = item.src;
-            const currentNum = (currentIndex + 1).toString().padStart(2, '0');
-            indicator.innerText = `${currentNum} / ${item.category}`;
+            // Стартовая настройка первой картинки (без показа)
+            preloadImage(currentIndex);
         }
 
         function startApp() {
-            // Анимация ухода заставки
             landingPage.classList.add('landing-hidden');
-            // Анимация появления вьювера
             viewerPage.classList.add('viewer-visible');
         }
 
@@ -339,7 +319,6 @@
             viewerPage.classList.remove('viewer-visible');
         }
 
-        // Защита от слишком быстрых кликов (чтобы анимация не дергалась)
         let isAnimating = false;
 
         function changeSlide(direction) {
@@ -348,42 +327,56 @@
 
             const nextIndex = getNextIndex(direction);
             
-            // 1. Анимация исчезновения старой картинки
+            // 1. Анимация ухода
             if (direction > 0) {
-                imgElement.className = 'slide-out-left'; // Уезжает влево
+                imgElement.className = 'slide-out-left'; 
             } else {
-                imgElement.className = 'slide-out-right'; // Уезжает вправо
+                imgElement.className = 'slide-out-right';
             }
             
             // Анимация текста
             indicator.classList.remove('text-pop');
-            void indicator.offsetWidth; // Триггер перезапуска анимации
+            void indicator.offsetWidth; 
             indicator.classList.add('text-pop');
 
-            // 2. Ждем пока уедет (300мс), потом меняем SRC
+            // 2. Ждем и меняем контент
             setTimeout(() => {
                 currentIndex = nextIndex;
-                const item = menuData[currentIndex];
-                imgElement.src = item.src;
-                
-                // Обновляем текст
-                const currentNum = (currentIndex + 1).toString().padStart(2, '0');
-                indicator.innerText = `${currentNum} / ${item.category}`;
+                updateImageSource();
 
-                // 3. Анимация появления новой
+                // 3. Анимация прихода
                 if (direction > 0) {
-                    imgElement.className = 'slide-in-right'; // Выезжает справа
+                    imgElement.className = 'slide-in-right'; 
                 } else {
-                    imgElement.className = 'slide-in-left'; // Выезжает слева
+                    imgElement.className = 'slide-in-left'; 
                 }
 
-                // Кэшируем следующую
+                // Предзагрузка следующей (для плавности)
                 preloadNext();
 
-                // Снимаем блокировку кликов
-                setTimeout(() => { isAnimating = false; }, 400);
-
+                setTimeout(() => { isAnimating = false; }, 300);
             }, 300);
+        }
+
+        function jumpToCategory(catName) {
+            const index = menuData.findIndex(item => item.category === catName);
+            if (index !== -1) {
+                // Без свайпа, просто фейд
+                imgElement.style.opacity = 0;
+                setTimeout(() => {
+                    currentIndex = index;
+                    updateImageSource();
+                    imgElement.className = ''; 
+                    imgElement.style.opacity = 1; 
+                }, 200);
+            }
+        }
+
+        function updateImageSource() {
+            const item = menuData[currentIndex];
+            imgElement.src = item.src;
+            const currentNum = (currentIndex + 1).toString().padStart(2, '0');
+            indicator.innerText = `${currentNum} / ${item.category}`;
         }
 
         function getNextIndex(direction) {
@@ -393,22 +386,11 @@
             return idx;
         }
 
-        function jumpToCategory(catName) {
-            // Тут без анимации свайпа, просто плавное появление (фейд)
-            const index = menuData.findIndex(item => item.category === catName);
-            if (index !== -1) {
-                imgElement.style.opacity = 0;
-                setTimeout(() => {
-                    currentIndex = index;
-                    const item = menuData[currentIndex];
-                    imgElement.src = item.src;
-                    const currentNum = (currentIndex + 1).toString().padStart(2, '0');
-                    indicator.innerText = `${currentNum} / ${item.category}`;
-                    
-                    imgElement.className = ''; // сброс классов анимации
-                    imgElement.style.opacity = 1; // возвращаем видимость
-                }, 200);
-            }
+        function preloadImage(idx) {
+            // Техническая функция для предзагрузки
+            const img = new Image();
+            img.src = menuData[idx].src;
+            if (idx === currentIndex) updateImageSource();
         }
 
         function preloadNext() {
